@@ -2,7 +2,7 @@
 1. First Virtualbox package was download on the host by using the following command:
 sudo apt install virtualbox
 2. Next, the iso image of ubuntu server 16.04 was downloaded from the given link.
-Using virtualbox, a new virtual machine with the type of Linux and version Ubuntu(64-bit) and 4GB of memory and a virtual hard disk of 20GB(dynamically allocated) was created.
+Using virtualbox, a new virtual machine with the type of Linux and version Ubuntu(64-bit) and 4GB of memory and a virtual hard disk of 10GB(dynamically allocated) was created.
 3. I started the newly created virtual machine from VirtualBox and selected the ubuntu server image .iso file to boot from the virtual optical disk of the virtual machine and followed the instructions to set up ubuntu server 16.04. 
 4. In the network settings for the virtual machine, inside the Adapter 1 tab and also Port Forwarding, I set the rules as given.
 
