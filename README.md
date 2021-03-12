@@ -58,4 +58,31 @@ Lastly, I tagged the image using  dockram/go-web-hello-world:v0.1 and pushed it 
 ## Task 8: Document the procedure in a MarkDown file
 I documented steps 0-7 as instructed.
 
+## Task 9: Install a single node Kubernetes cluster using kubeadm
+I followed the instructions in the given link and finally ran the command “kubeadm init” to start a control plane and cluster. 
+
+## Task 10: Deploy the hello world container
+In this step, after creating the yaml file and creating the pod, I realized that the status of the pod was stuck at pending. I created another pod using a different yaml to check whether the problem is the container/yaml file or something else. After using “kubectl describe” I realized that the master node had gone into DiskPressure status and also the pod for the hello-world app had failed in scheduling. I checked my disk usage and also saw that the 10GB limit was almost reached. Therefore, I tried to increase the size of my VM storage using an alternative method with no guaranteed results: 
+1. I used the command “VBoxManage clonehd UbuntuServer16.04.vdi UbuntuServer16.04-new.vdi --format VDI --variant Standard” to make a new copy of the disk,
+2. enlarged the new copy to 25GB using : “VBoxManage modifyhd UbuntuServer16.04-new.vdi --resize 25000” 
+3. Replaced the old storage with the new one in the virtual box manager however it did not work as the VM would not detect the increase in size
+4. In the end I had to create a another VM from scratch with larger size of storage 
+
+After setting up the new VM, I installed kubernetes again. Next, I installed Calico first for pod networking:
+1. curl https://docs.projectcalico.org/manifests/calico.yaml -O
+2. kubectl apply -f calico.yaml
+I tried to create a sample deployment from a yaml file from the web, but it got stuck in the pending status. After getting the description of the pod for that deployment, it said that the reason was “FailedScheduling” and the master node had taint which had to be removed. So I removed it by using :
+sudo kubectl taint nodes myubuntuserver16 node-role.kubernetes.io/master-
+
+Finally, I got my container up and running on a pod. I faced some challenges:
+1. I tried to use kubernete’s port-forwarding to be able to curl http://127.0.0.1:31080, but still could not reach the container from my local host. It would give the error of connection reset by peer.
+2. Next, I tried creating a service instead of the pod, and then communicating through the kubernetes proxy with the container, yet using  curl http://127.0.0.1:31080 would give an error of connection refused.
+3. I checked the port 31080 to make sure it was available on both ends and it was all ok.
+4. I am sure that I had missed something while learning about pod communication and kubeadm server API. 
+5. Unfortunately I ran out of time at this point and did not get dive deeper in debugging and get to tasks 11,12.
+ 
+The deployment yaml is pushed to the repo.
+
+
+
 
